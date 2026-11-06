@@ -1,0 +1,16 @@
+server:
+  port: 8082
+spring:
+  # картинки мероприятий: до 5 МБ (по умолчанию Spring пускает только 1 МБ)
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 6MB
+  datasource:
+    url: jdbc:postgresql://localhost:5432/event_db
+    username: postgres
+    password: ${DB_PASSWORD:}
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true

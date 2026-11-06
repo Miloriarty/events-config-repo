@@ -1,0 +1,8 @@
+server:
+  port: 8085
+# Подписывает токены билетов. Отдельный от jwt.secret: токен лежит в QR-коде и не должен подходить для входа
+ticket-pass:
+  secret: 2cx+e9XnNO97z1urT66uRdHzMPBLXkI+2Z+k6oPruoV0rd0hv29qlQQXgQMebJts
+app:
+  # адрес клиента: QR-код ведёт на его страницу проверки билетов
+  frontend-url: ${FRONTEND_URL:http://localhost:4200}

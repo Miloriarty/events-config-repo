@@ -1,0 +1,97 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+            - id: user-service
+              uri: lb://user-service
+              predicates:
+                - Path=/api/auth/**,/api/users/**
+            - id: event-service
+              uri: lb://event-service
+              predicates:
+                - Path=/api/events/**,/api/categories/**,/api/locations/**
+            - id: booking-service
+              uri: lb://booking-service
+              predicates:
+                - Path=/api/orders/**,/api/registrations/**,/api/tickets/**
+            - id: notification-service
+              uri: lb://notification-service
+              predicates:
+                - Path=/api/notifications/**
+            - id: ticket-pass-service
+              uri: lb://ticket-pass-service
+              predicates:
+                - Path=/api/passes/**
+            - id: reminder-service
+              uri: lb://reminder-service
+              predicates:
+                - Path=/api/reminders/**
+
+            # OpenAPI-документы сервисов для общего Swagger UI
+            - id: user-service-docs
+              uri: lb://user-service
+              predicates:
+                - Path=/user-service/v3/api-docs
+              filters:
+                - RewritePath=/user-service/v3/api-docs, /v3/api-docs
+            - id: event-service-docs
+              uri: lb://event-service
+              predicates:
+                - Path=/event-service/v3/api-docs
+              filters:
+                - RewritePath=/event-service/v3/api-docs, /v3/api-docs
+            - id: booking-service-docs
+              uri: lb://booking-service
+              predicates:
+                - Path=/booking-service/v3/api-docs
+              filters:
+                - RewritePath=/booking-service/v3/api-docs, /v3/api-docs
+            - id: notification-service-docs
+              uri: lb://notification-service
+              predicates:
+                - Path=/notification-service/v3/api-docs
+              filters:
+                - RewritePath=/notification-service/v3/api-docs, /v3/api-docs
+            - id: ticket-pass-service-docs
+              uri: lb://ticket-pass-service
+              predicates:
+                - Path=/ticket-pass-service/v3/api-docs
+              filters:
+                - RewritePath=/ticket-pass-service/v3/api-docs, /v3/api-docs
+            - id: reminder-service-docs
+              uri: lb://reminder-service
+              predicates:
+                - Path=/reminder-service/v3/api-docs
+              filters:
+                - RewritePath=/reminder-service/v3/api-docs, /v3/api-docs
+
+springdoc:
+  swagger-ui:
+    urls:
+      - name: user-service
+        url: /user-service/v3/api-docs
+      - name: event-service
+        url: /event-service/v3/api-docs
+      - name: booking-service
+        url: /booking-service/v3/api-docs
+      - name: notification-service
+        url: /notification-service/v3/api-docs
+      - name: ticket-pass-service
+        url: /ticket-pass-service/v3/api-docs
+      - name: reminder-service
+        url: /reminder-service/v3/api-docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,gateway
+  # список маршрутов: /actuator/gateway/routes
+  endpoint:
+    gateway:
+      access: read-only

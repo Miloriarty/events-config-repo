@@ -1,0 +1,45 @@
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+  # источники данных для /actuator/info (по умолчанию выключены, и эндпоинт отдаёт {})
+  info:
+    env:
+      enabled: true
+    java:
+      enabled: true
+    os:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    description: Events platform — учебный проект на Spring Cloud
+
+logging:
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# брокер: booking-service и reminder-service публикуют события, notification-service их читает
+spring:
+  rabbitmq:
+    host: ${RABBITMQ_HOST:localhost}
+    port: ${RABBITMQ_PORT:5672}
+    username: ${RABBITMQ_USERNAME:guest}
+    password: ${RABBITMQ_PASSWORD:guest}
+    # недоступный брокер не должен надолго задерживать ответ на заказ
+    connection-timeout: 3s
+
+# общий секрет: user-service подписывает токены, api-gateway проверяет
+jwt:
+  secret: Nj7G7d8FBewv98mSGc43Bp5hXA39KRvwLpm6/1cTNck5L19Ea9HtNG8Qq2KNlpbN
+  expiration-ms: 86400000
